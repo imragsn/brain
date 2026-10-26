@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Peta Second Brain Im — Connecting Dots</title>
+<title>Peta Second Brain Imra — Connecting Dots</title>
 <style>
 /* VOLT 1.1.0 — diadaptasi untuk UI web, bukan ukuran slide.
    Token warna dari DESIGN-SYSTEM.md: ink #101110, paper #FFFFFA,
@@ -46,28 +46,28 @@ svg{width:100%;height:560px;background:#FFFFFA;display:block}
 <body>
 <div class="wrap">
 <p class="eyebrow">Volt / Second Brain — 01 / Peta</p>
-<h1>Peta Second Brain Im</h1>
-<p class="sub">Klik satu titik untuk melihat garis penghubungnya. Titik tengahnya adalah Second Brain Im — semua hal nyambung lewat situ, bukan berdiri sendiri-sendiri. Titik yang aktif memakai bidang electric, garis yang aktif memakai garis ink tebal.</p>
+<h1>Peta Second Brain Imra</h1>
+<p class="sub">Klik satu titik untuk melihat garis penghubungnya. Titik tengahnya adalah Second Brain Imra — semua hal nyambung lewat situ, bukan berdiri sendiri-sendiri. Titik yang aktif memakai bidang electric, garis yang aktif memakai garis ink tebal.</p>
 <div class="map-frame">
-<svg viewBox="0 0 900 560" id="map" role="img" aria-label="Peta connecting dots second brain Im">
+<svg viewBox="0 0 900 560" id="map" role="img" aria-label="Peta connecting dots second brain Imra">
 <g id="edges"></g>
 <g id="nodes"></g>
 </svg>
 </div>
 <div id="detail"><h2>Klik salah satu titik</h2><p>Contoh: klik Inbox untuk melihat dari mana isinya datang dan ke mana dia dirapikan.</p></div>
 <p class="legend">Garis tebal = terhubung dengan titik yang lo klik. Contoh nyata 26 Oktober 2026: Rapat Anjab/ABK dan Cek Domain masuk Daily Notes, Video Motion dan AI Agent di Muse masuk Projects.</p>
-<p class="footer">Volt 1.1.0 — Peta Second Brain Im · 26 Oktober 2026 · Data dari Notion Second Brain Im</p>
+<p class="footer">Volt 1.1.0 — Peta Second Brain Imra · 26 Oktober 2026 · Data dari Notion Second Brain Imra</p>
 </div>
 <script>
 const nodes=[
-{id:'im',x:450,y:280,w:180,label:'Second Brain',sub:'Im',center:true,desc:'Pusatnya. Semua hal nyambung lewat sini. Im yang memutuskan, Muse hanya mengusulkan draf.'},
+{id:'im',x:450,y:280,w:180,label:'Second Brain',sub:'Imra',center:true,desc:'Pusatnya. Semua hal nyambung lewat sini. Imra yang memutuskan, Muse hanya mengusulkan draf.'},
 {id:'wa',x:130,y:90,w:150,label:'WhatsApp',sub:'sumber',desc:'Sumber tangkapan: ide, tugas, link, pertanyaan. Dari sini semua hal pertama kali masuk.'},
 {id:'muse',x:130,y:280,w:150,label:'Muse',sub:'librarian',desc:'Librarian second brain: menangkap, merapikan, menghubungkan, dan mengingatkan. Bukan gudangnya.'},
 {id:'inbox',x:130,y:470,w:150,label:'Inbox',sub:'keranjang',desc:'Keranjang pertama. Semua hal masuk sini dulu dengan status Belum dirapikan, lalu dirapikan tiap malam/Jumat.'},
 {id:'daily',x:450,y:90,w:150,label:'Daily Notes',sub:'harian',desc:'Log harian. Contoh 26 Okt 2026: Rapat web Anjab dan ABK di Biro SDMO, dan Cek Domain web digital invitation.'},
 {id:'projects',x:770,y:90,w:150,label:'Projects',sub:'proyek',desc:'Proyek aktif. Contoh: Belajar skill video motion (Belajar), dan Ngulik AI agent di Muse (Agent, Berjalan).'},
 {id:'labpul',x:770,y:280,w:150,label:'Labpul',sub:'15.00 WIB',desc:'Agen lapbul Senin-Jumat 15.00 WIB + follow-up 16.00 WIB. Mengubah aktivitas harian jadi narasi SKP setelah konfirmasi.'},
-{id:'sheet',x:770,y:470,w:150,label:'Lapbul Sheet',sub:'SKP final',desc:'Dokumen final SKP, tab Lapbul OKTOBER 2026. Hanya diisi setelah Im konfirmasi, bukan otomatis dari Notion.'},
+{id:'sheet',x:770,y:470,w:150,label:'Lapbul Sheet',sub:'SKP final',desc:'Dokumen final SKP, tab Lapbul OKTOBER 2026. Hanya diisi setelah Imra konfirmasi, bukan otomatis dari Notion.'},
 {id:'drive',x:450,y:470,w:150,label:'Drive',sub:'bukti',desc:'Folder bukti bulan berjalan (Tahun / BULAN TAHUN). Kolom bukti di sheet memakai link folder bulan, bukan link per file.'},
 ];
 const edges=[
@@ -76,12 +76,12 @@ const edges=[
 ['inbox','daily','Inbox → Daily Notes: aktivitas harian seperti rapat dan cek domain.'],
 ['inbox','projects','Inbox → Projects: ide yang jadi proyek seperti video motion dan AI agent.'],
 ['daily','labpul','Daily Notes → Labpul: bahan harian jadi bahan rekap.'],
-['labpul','sheet','Labpul → Lapbul Sheet: narasi SKP, hanya setelah konfirmasi Im.'],
+['labpul','sheet','Labpul → Lapbul Sheet: narasi SKP, hanya setelah konfirmasi Imra.'],
 ['sheet','drive','Lapbul Sheet → Drive: kolom bukti memakai link folder bulan berjalan.'],
 ['projects','daily','Projects → Daily Notes: aksi berikutnya dari proyek jadi fokus harian.'],
 ['im','muse','Second Brain ↔ Muse: Muse bekerja dari gudang ini, hasilnya kembali ke gudang.'],
-['im','daily','Second Brain ↔ Daily Notes: log harian adalah ingatan harian Im.'],
-['im','projects','Second Brain ↔ Projects: proyek adalah arah kerja Im yang sedang berjalan.'],
+['im','daily','Second Brain ↔ Daily Notes: log harian adalah ingatan harian Imra.'],
+['im','projects','Second Brain ↔ Projects: proyek adalah arah kerja Imra yang sedang berjalan.'],
 ];
 const svgNS='http://www.w3.org/2000/svg';
 const eg=document.getElementById('edges'), ng=document.getElementById('nodes'), detail=document.getElementById('detail');
