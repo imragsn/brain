@@ -13,14 +13,19 @@
 *{box-sizing:border-box}
 body{font-family:Arial,Helvetica,sans-serif;background:#FFFFFA;color:#101110;margin:0;padding:24px;font-size:16px;line-height:1.6}
 a{color:inherit;text-underline-offset:4px}
-a:focus-visible,.node:focus-visible{outline:3px solid #235A87;outline-offset:4px}
+a:focus-visible,.node:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #235A87;outline-offset:4px}
 .wrap{max-width:960px;margin:0 auto}
 .eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#595D52;margin:0 0 8px}
 h1{font-size:clamp(40px,6vw,72px);line-height:.98;letter-spacing:-.04em;margin:0 0 16px;text-transform:uppercase}
 p.sub{color:#595D52;margin:0 0 24px;max-width:760px}
-.map-frame{border:2px solid #101110;background:#FFFFFA;padding:0}
+.toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:0 0 16px}
+.toolbar input{font-family:Arial,Helvetica,sans-serif;font-size:16px;color:#101110;background:#FFFFFA;border:2px solid #101110;padding:10px 12px;min-width:240px;flex:1}
+.toolbar button{font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:700;color:#101110;background:#FFFFFA;border:2px solid #101110;padding:10px 14px;cursor:pointer}
+.toolbar button:hover{background:#E8F500}
+.map-frame{border:2px solid #101110;background:#FFFFFA;padding:0;touch-action:none}
 svg{width:100%;height:560px;background:#FFFFFA;display:block}
-.node{cursor:pointer}
+.node{cursor:grab}
+.node:active{cursor:grabbing}
 .node rect{fill:#FFFFFA;stroke:#101110;stroke-width:2}
 .node text{font-family:Arial,Helvetica,sans-serif;text-anchor:middle;pointer-events:none}
 .node .label{font-size:14px;font-weight:700;fill:#101110}
@@ -28,16 +33,23 @@ svg{width:100%;height:560px;background:#FFFFFA;display:block}
 .node.center rect{fill:#101110}
 .node.center .label{fill:#FFFFFA}
 .node.center .sublabel{fill:#E8F500}
+.node.hover rect{fill:#F7FACD}
+.node.center.hover rect{fill:#101110}
 .node.active rect{fill:#E8F500}
 .node.active .label{fill:#101110}
 .node.active .sublabel{fill:#101110}
+.node.dim,.edge.dim{opacity:.25}
 .edge{stroke:#919587;stroke-width:2;fill:none}
+.edge.hover{stroke:#101110;stroke-width:3}
 .edge.active{stroke:#101110;stroke-width:4}
 #detail{border:2px solid #101110;background:#FFFFFA;padding:24px;margin-top:24px;line-height:1.6}
 #detail.active{border-top:8px solid #E8F500}
 #detail h2{margin:0 0 8px;font-size:20px;line-height:1.15;letter-spacing:-.02em}
 #detail p{margin:0 0 12px;color:#101110}
 #detail ul{margin:0;padding-left:20px}
+.openlink{display:inline-block;font-weight:700;background:#E8F500;border:2px solid #101110;padding:10px 16px;text-decoration:none;margin-top:4px}
+.openlink:hover{background:#FFFFFA}
+.nolink{color:#595D52;font-size:14px}
 .legend{color:#595D52;font-size:13px;margin-top:16px}
 .footer{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#595D52;border-top:2px solid #101110;margin-top:32px;padding-top:16px}
 @media(max-width:600px){body{padding:16px}svg{height:480px}.node .label{font-size:12px}}
@@ -47,28 +59,34 @@ svg{width:100%;height:560px;background:#FFFFFA;display:block}
 <div class="wrap">
 <p class="eyebrow">Volt / Second Brain — 01 / Peta</p>
 <h1>Peta Second Brain Imra</h1>
-<p class="sub">Klik satu titik untuk melihat garis penghubungnya. Titik tengahnya adalah Second Brain Imra — semua hal nyambung lewat situ, bukan berdiri sendiri-sendiri. Titik yang aktif memakai bidang electric, garis yang aktif memakai garis ink tebal.</p>
+<p class="sub">Geser titiknya, zoom dengan scroll atau tombol, arahkan kursor untuk pratinjau, klik titik untuk detailnya. Titik yang punya halaman tujuan punya tombol untuk membukanya. Titik tengahnya adalah Second Brain Imra — semua hal nyambung lewat situ, bukan berdiri sendiri-sendiri.</p>
+<div class="toolbar" role="search">
+<input id="search" type="search" placeholder="Cari titik, misal: video, Daily, Labpul" aria-label="Cari titik di peta">
+<button type="button" id="zoomIn">Zoom +</button>
+<button type="button" id="zoomOut">Zoom −</button>
+<button type="button" id="resetView">Reset tampilan</button>
+</div>
 <div class="map-frame">
 <svg viewBox="0 0 900 560" id="map" role="img" aria-label="Peta connecting dots second brain Imra">
 <g id="edges"></g>
 <g id="nodes"></g>
 </svg>
 </div>
-<div id="detail"><h2>Klik salah satu titik</h2><p>Contoh: klik Inbox untuk melihat dari mana isinya datang dan ke mana dia dirapikan.</p></div>
-<p class="legend">Garis tebal = terhubung dengan titik yang lo klik. Contoh nyata 26 Oktober 2026: Rapat Anjab/ABK dan Cek Domain masuk Daily Notes, Video Motion dan AI Agent di Muse masuk Projects.</p>
+<div id="detail"><h2>Klik salah satu titik</h2><p>Contoh: klik Inbox untuk melihat dari mana isinya datang dan ke mana dia dirapikan. Titik juga bisa digeser — garisnya ikut.</p></div>
+<p class="legend">Garis tebal = terhubung dengan titik yang lo klik atau yang lo arahkan. Contoh nyata 26 Oktober 2026: Rapat Anjab/ABK dan Cek Domain masuk Daily Notes, Video Motion dan AI Agent di Muse masuk Projects.</p>
 <p class="footer">Volt 1.1.0 — Peta Second Brain Imra · 26 Oktober 2026 · Data dari Notion Second Brain Imra</p>
 </div>
 <script>
 const nodes=[
-{id:'im',x:450,y:280,w:180,label:'Second Brain',sub:'Imra',center:true,desc:'Pusatnya. Semua hal nyambung lewat sini. Imra yang memutuskan, Muse hanya mengusulkan draf.'},
-{id:'wa',x:130,y:90,w:150,label:'WhatsApp',sub:'sumber',desc:'Sumber tangkapan: ide, tugas, link, pertanyaan. Dari sini semua hal pertama kali masuk.'},
-{id:'muse',x:130,y:280,w:150,label:'Muse',sub:'librarian',desc:'Librarian second brain: menangkap, merapikan, menghubungkan, dan mengingatkan. Bukan gudangnya.'},
-{id:'inbox',x:130,y:470,w:150,label:'Inbox',sub:'keranjang',desc:'Keranjang pertama. Semua hal masuk sini dulu dengan status Belum dirapikan, lalu dirapikan tiap malam/Jumat.'},
-{id:'daily',x:450,y:90,w:150,label:'Daily Notes',sub:'harian',desc:'Log harian. Contoh 26 Okt 2026: Rapat web Anjab dan ABK di Biro SDMO, dan Cek Domain web digital invitation.'},
-{id:'projects',x:770,y:90,w:150,label:'Projects',sub:'proyek',desc:'Proyek aktif. Contoh: Belajar skill video motion (Belajar), dan Ngulik AI agent di Muse (Agent, Berjalan).'},
-{id:'labpul',x:770,y:280,w:150,label:'Labpul',sub:'15.00 WIB',desc:'Agen lapbul Senin-Jumat 15.00 WIB + follow-up 16.00 WIB. Mengubah aktivitas harian jadi narasi SKP setelah konfirmasi.'},
-{id:'sheet',x:770,y:470,w:150,label:'Lapbul Sheet',sub:'SKP final',desc:'Dokumen final SKP, tab Lapbul OKTOBER 2026. Hanya diisi setelah Imra konfirmasi, bukan otomatis dari Notion.'},
-{id:'drive',x:450,y:470,w:150,label:'Drive',sub:'bukti',desc:'Folder bukti bulan berjalan (Tahun / BULAN TAHUN). Kolom bukti di sheet memakai link folder bulan, bukan link per file.'},
+{id:'im',x:450,y:280,w:180,label:'Second Brain',sub:'Imra',center:true,link:'https://app.notion.com/p/4049f40bfa1581aabbfbce0598f34c30?pvs=204',linkLabel:'Buka Second Brain di Notion',desc:'Pusatnya. Semua hal nyambung lewat sini. Imra yang memutuskan, Muse hanya mengusulkan draf.'},
+{id:'wa',x:130,y:90,w:150,label:'WhatsApp',sub:'sumber',link:null,desc:'Sumber tangkapan: ide, tugas, link, pertanyaan. Dari sini semua hal pertama kali masuk.'},
+{id:'muse',x:130,y:280,w:150,label:'Muse',sub:'librarian',link:null,desc:'Librarian second brain: menangkap, merapikan, menghubungkan, dan mengingatkan. Bukan gudangnya.'},
+{id:'inbox',x:130,y:470,w:150,label:'Inbox',sub:'keranjang',link:'https://app.notion.com/p/a9e2cdd3e6a4458ca22a4b7088560952',linkLabel:'Buka Inbox di Notion',desc:'Keranjang pertama. Semua hal masuk sini dulu dengan status Belum dirapikan, lalu dirapikan tiap malam/Jumat.'},
+{id:'daily',x:450,y:90,w:150,label:'Daily Notes',sub:'harian',link:'https://app.notion.com/p/8131a86ddb3747a5a2e4d3b4976533d3',linkLabel:'Buka Daily Notes di Notion',desc:'Log harian. Contoh 26 Okt 2026: Rapat web Anjab dan ABK di Biro SDMO, dan Cek Domain web digital invitation.'},
+{id:'projects',x:770,y:90,w:150,label:'Projects',sub:'proyek',link:'https://app.notion.com/p/c7e139f02cfa4737ad5e39fe2e687b52',linkLabel:'Buka Projects di Notion',desc:'Proyek aktif. Contoh: Belajar skill video motion (Belajar), dan Ngulik AI agent di Muse (Agent, Berjalan).'},
+{id:'labpul',x:770,y:280,w:150,label:'Labpul',sub:'15.00 WIB',link:null,desc:'Agen lapbul Senin-Jumat 15.00 WIB + follow-up 16.00 WIB. Mengubah aktivitas harian jadi narasi SKP setelah konfirmasi.'},
+{id:'sheet',x:770,y:470,w:150,label:'Lapbul Sheet',sub:'SKP final',link:'https://docs.google.com/spreadsheets/d/1HhdC6MhUqndvcMPuAWzNeHLJpYSf8gsKVV4P6VD9W0s',linkLabel:'Buka spreadsheet Lapbul',desc:'Dokumen final SKP, tab Lapbul OKTOBER 2026. Hanya diisi setelah Imra konfirmasi, bukan otomatis dari Notion.'},
+{id:'drive',x:450,y:470,w:150,label:'Drive',sub:'bukti',link:'https://drive.google.com/drive/u/1/folders/1VUpDA5sAwdWq3mWNdzQ4CmN5NhDX6Gbd',linkLabel:'Buka folder Drive',desc:'Folder bukti bulan berjalan (Tahun / BULAN TAHUN). Kolom bukti di sheet memakai link folder bulan, bukan link per file.'},
 ];
 const edges=[
 ['wa','muse','WhatsApp → Muse: tangkap ide dan tugas.'],
@@ -84,37 +102,158 @@ const edges=[
 ['im','projects','Second Brain ↔ Projects: proyek adalah arah kerja Imra yang sedang berjalan.'],
 ];
 const svgNS='http://www.w3.org/2000/svg';
+const svg=document.getElementById('map');
 const eg=document.getElementById('edges'), ng=document.getElementById('nodes'), detail=document.getElementById('detail');
 const byId=Object.fromEntries(nodes.map(n=>[n.id,n]));
+const initialView={x:0,y:0,w:900,h:560};
+let view={x:0,y:0,w:900,h:560};
+let selected=null;
+function setView(v){view=v;svg.setAttribute('viewBox',v.x+' '+v.y+' '+v.w+' '+v.h);}
+function svgPoint(evt){
+  const r=svg.getBoundingClientRect();
+  return {x:view.x+(evt.clientX-r.left)/r.width*view.w, y:view.y+(evt.clientY-r.top)/r.height*view.h};
+}
+function zoomAt(cx,cy,factor){
+  const p={x:view.x+cx/100*view.w, y:view.y+cy/100*view.h};
+  // cx, cy are percentages across the svg element
+  const nw=Math.max(300,Math.min(1800,view.w*factor));
+  const nh=nw*560/900;
+  setView({x:p.x-cx/100*nw, y:p.y-cy/100*nh, w:nw, h:nh});
+}
+const edgeEls=[];
 edges.forEach(([a,b,label],i)=>{
   const p=document.createElementNS(svgNS,'line');
-  p.setAttribute('x1',byId[a].x); p.setAttribute('y1',byId[a].y);
-  p.setAttribute('x2',byId[b].x); p.setAttribute('y2',byId[b].y);
   p.setAttribute('class','edge'); p.setAttribute('data-i',i); eg.appendChild(p);
+  edgeEls.push({el:p,a:a,b:b,label:label});
 });
-function select(n,g){
+function renderEdges(){
+  edgeEls.forEach(e=>{
+    const A=byId[e.a], B=byId[e.b];
+    e.el.setAttribute('x1',A.x); e.el.setAttribute('y1',A.y);
+    e.el.setAttribute('x2',B.x); e.el.setAttribute('y2',B.y);
+  });
+}
+function connectedIds(id){
+  const out=new Set([id]);
+  edges.forEach(e=>{if(e[0]===id)out.add(e[1]); if(e[1]===id)out.add(e[0]);});
+  return out;
+}
+function clearActive(){
   document.querySelectorAll('.edge').forEach(e=>e.classList.remove('active'));
   document.querySelectorAll('.node').forEach(e=>e.classList.remove('active'));
-  g.classList.add('active');
-  detail.classList.add('active');
-  const rel=edges.map((e,i)=>({e,i})).filter(x=>x.e[0]===n.id||x.e[1]===n.id);
-  rel.forEach(x=>eg.querySelector(`[data-i="${x.i}"]`).classList.add('active'));
-  const lines=rel.map(x=>`<li>${x.e[2]}</li>`).join('') || '<li>Belum ada garis langsung yang dicatat untuk titik ini.</li>';
-  detail.innerHTML=`<h2>${n.label} — ${n.sub}</h2><p>${n.desc}</p><p><b>Garis yang terhubung:</b></p><ul>${lines}</ul>`;
+  detail.classList.remove('active');
 }
+function highlight(id,cls){
+  const ids=connectedIds(id);
+  document.querySelectorAll('.node').forEach(el=>{if(ids.has(el.getAttribute('data-id')))el.classList.add(cls);});
+  edgeEls.forEach(e=>{if(e.a===id||e.b===id)e.el.classList.add(cls);});
+}
+function clearHover(){
+  document.querySelectorAll('.node').forEach(e=>e.classList.remove('hover'));
+  document.querySelectorAll('.edge').forEach(e=>e.classList.remove('hover'));
+}
+function select(n,g){
+  selected=n.id; clearActive(); g.classList.add('active'); detail.classList.add('active');
+  highlight(n.id,'active');
+  const rel=edges.map(e=>e).filter(e=>e[0]===n.id||e[1]===n.id);
+  const lines=rel.map(e=>`<li>${e[2]}</li>`).join('') || '<li>Belum ada garis langsung yang dicatat untuk titik ini.</li>';
+  const open=n.link
+    ? `<a class="openlink" href="${n.link}" target="_blank" rel="noopener">${n.linkLabel}</a>`
+    : `<p class="nolink">Titik ini tidak punya halaman tujuan — detailnya saja yang ditampilkan.</p>`;
+  detail.innerHTML=`<h2>${n.label} — ${n.sub}</h2><p>${n.desc}</p><p><b>Garis yang terhubung:</b></p><ul>${lines}</ul>${open}`;
+}
+const nodeEls={};
 nodes.forEach(n=>{
   const g=document.createElementNS(svgNS,'g');
   g.setAttribute('class','node'+(n.center?' center':'')); g.setAttribute('data-id',n.id);
   g.setAttribute('tabindex','0'); g.setAttribute('role','button');
   g.setAttribute('aria-label',n.label+' — '+n.sub);
   const r=document.createElementNS(svgNS,'rect');
-  r.setAttribute('x',n.x-n.w/2); r.setAttribute('y',n.y-28); r.setAttribute('width',n.w); r.setAttribute('height',56);
-  const t=document.createElementNS(svgNS,'text'); t.setAttribute('class','label'); t.setAttribute('x',n.x); t.setAttribute('y',n.y-2); t.textContent=n.label;
-  const s=document.createElementNS(svgNS,'text'); s.setAttribute('class','sublabel'); s.setAttribute('x',n.x); s.setAttribute('y',n.y+16); s.textContent=n.sub;
-  g.append(r,t,s); ng.appendChild(g);
-  g.addEventListener('click',()=>select(n,g));
+  r.setAttribute('width',n.w); r.setAttribute('height',56);
+  const t=document.createElementNS(svgNS,'text'); t.setAttribute('class','label'); t.textContent=n.label;
+  const s=document.createElementNS(svgNS,'text'); s.setAttribute('class','sublabel'); s.textContent=n.sub;
+  g.append(r,t,s); ng.appendChild(g); nodeEls[n.id]={g:g,rect:r,label:t,sub:s};
+  function renderNode(){
+    r.setAttribute('x',n.x-n.w/2); r.setAttribute('y',n.y-28);
+    t.setAttribute('x',n.x); t.setAttribute('y',n.y-2);
+    s.setAttribute('x',n.x); s.setAttribute('y',n.y+16);
+  }
+  n.render=renderNode; renderNode();
+  let dragging=false, startPt=null, startPos=null, moved=false;
+  g.addEventListener('pointerdown',e=>{
+    dragging=true; moved=false; startPt=svgPoint(e); startPos={x:n.x,y:n.y};
+    g.setPointerCapture(e.pointerId);
+  });
+  g.addEventListener('pointermove',e=>{
+    if(!dragging)return;
+    const p=svgPoint(e);
+    const dx=p.x-startPt.x, dy=p.y-startPt.y;
+    if(Math.abs(dx)>2||Math.abs(dy)>2)moved=true;
+    n.x=Math.max(80,Math.min(820,startPos.x+dx));
+    n.y=Math.max(40,Math.min(520,startPos.y+dy));
+    renderNode(); renderEdges();
+  });
+  function endDrag(e){
+    if(!dragging)return; dragging=false;
+    if(moved){e.preventDefault();}
+  }
+  g.addEventListener('pointerup',endDrag);
+  g.addEventListener('pointercancel',()=>{dragging=false;});
+  g.addEventListener('click',e=>{
+    if(moved){moved=false;return;}
+    select(n,g);
+  });
+  g.addEventListener('mouseenter',()=>{clearHover(); highlight(n.id,'hover');});
+  g.addEventListener('mouseleave',()=>{clearHover();});
   g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select(n,g);}});
 });
+renderEdges();
+// Pan by dragging the background, zoom with the wheel
+let panning=false, panStart=null, panView=null;
+svg.addEventListener('pointerdown',e=>{
+  if(e.target===svg||e.target.parentNode===eg||e.target.parentNode===ng&&false){
+    // background drag is handled below via target check on svg itself only
+  }
+  if(e.target!==svg)return;
+  panning=true; panStart={x:e.clientX,y:e.clientY}; panView={x:view.x,y:view.y,w:view.w,h:view.h};
+  svg.setPointerCapture(e.pointerId);
+});
+svg.addEventListener('pointermove',e=>{
+  if(!panning)return;
+  const r=svg.getBoundingClientRect();
+  const dx=(e.clientX-panStart.x)/r.width*panView.w;
+  const dy=(e.clientY-panStart.y)/r.height*panView.h;
+  setView({x:panView.x-dx, y:panView.y-dy, w:panView.w, h:panView.h});
+});
+svg.addEventListener('pointerup',()=>{panning=false;});
+svg.addEventListener('pointercancel',()=>{panning=false;});
+svg.addEventListener('wheel',e=>{
+  e.preventDefault();
+  const r=svg.getBoundingClientRect();
+  const cx=(e.clientX-r.left)/r.width*100, cy=(e.clientY-r.top)/r.height*100;
+  zoomAt(cx,cy,e.deltaY<0?0.9:1.1);
+},{passive:false});
+document.getElementById('zoomIn').addEventListener('click',()=>zoomAt(50,50,0.8));
+document.getElementById('zoomOut').addEventListener('click',()=>zoomAt(50,50,1.25));
+document.getElementById('resetView').addEventListener('click',()=>{
+  nodes.forEach(n=>{const o={im:[450,280],wa:[130,90],muse:[130,280],inbox:[130,470],daily:[450,90],projects:[770,90],labpul:[770,280],sheet:[770,470],drive:[450,470]}[n.id]; n.x=o[0]; n.y=o[1]; n.render();});
+  renderEdges(); setView({x:initialView.x,y:initialView.y,w:initialView.w,h:initialView.h});
+  document.getElementById('search').value=''; applySearch('');
+  clearActive(); selected=null; detail.classList.remove('active');
+  detail.innerHTML='<h2>Klik salah satu titik</h2><p>Contoh: klik Inbox untuk melihat dari mana isinya datang dan ke mana dia dirapikan. Titik juga bisa digeser — garisnya ikut.</p>';
+});
+function applySearch(q){
+  q=q.trim().toLowerCase();
+  document.querySelectorAll('.node').forEach(el=>el.classList.remove('dim'));
+  document.querySelectorAll('.edge').forEach(el=>el.classList.remove('dim'));
+  if(!q)return;
+  const match=nodes.filter(n=>(n.label+' '+n.sub+' '+n.desc).toLowerCase().includes(q)).map(n=>n.id);
+  const keep=new Set(match);
+  edges.forEach(e=>{if(match.includes(e[0]))keep.add(e[1]); if(match.includes(e[1]))keep.add(e[0]);});
+  document.querySelectorAll('.node').forEach(el=>{if(!keep.has(el.getAttribute('data-id')))el.classList.add('dim');});
+  edgeEls.forEach(e=>{if(!(match.includes(e.a)||match.includes(e.b)))e.el.classList.add('dim');});
+}
+document.getElementById('search').addEventListener('input',e=>applySearch(e.target.value));
 </script>
 </body>
 </html>
