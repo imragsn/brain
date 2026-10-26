@@ -191,11 +191,7 @@ nodes.forEach(n=>{
     if(Math.abs(dx)>2||Math.abs(dy)>2)moved=true;
     n.x=Math.max(80,Math.min(820,startPos.x+dx));
     n.y=Math.max(40,Math.min(520,startPos.y+dy));
-    renderNode(); try{
-  const saved=JSON.parse(localStorage.getItem('peta-imra-positions-v2')||'null');
-  if(saved){nodes.forEach(n=>{if(saved[n.id]){n.x=saved[n.id][0]; n.y=saved[n.id][1];}});}
-}catch(e){}
-renderEdges();
+    renderNode(); renderEdges();
   });
   function endDrag(e){
     if(!dragging)return; dragging=false;
@@ -218,6 +214,13 @@ renderEdges();
   g.addEventListener('mouseleave',()=>{clearHover();});
   g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select(n,g);}});
 });
+// Muat posisi tersimpan HANYA saat halaman dibuka, sebelum gambar pertama,
+// lalu gambar ulang titiknya agar kotak dan garis sama-sama memakai posisi itu.
+// Blok ini tidak boleh ada di dalam handler drag.
+try{
+  const saved=JSON.parse(localStorage.getItem('peta-imra-positions-v2')||'null');
+  if(saved){nodes.forEach(n=>{if(saved[n.id]){n.x=saved[n.id][0]; n.y=saved[n.id][1]; n.render();}});}
+}catch(e){}
 renderEdges();
 // Pan by dragging the background, zoom with the wheel
 let panning=false, panStart=null, panView=null;
