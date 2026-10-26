@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Peta Second Brain Im — Connecting Dots</title>
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f7f5f0;color:#222;margin:0;padding:24px}
+h1{font-size:26px;margin:0 0 4px} p.sub{color:#666;margin:0 0 16px;max-width:760px;line-height:1.5}
+.wrap{max-width:900px;margin:0 auto}
+svg{width:100%;height:560px;background:#fff;border:2px solid #222;border-radius:20px;display:block}
+.node{cursor:pointer} .node circle{stroke:#222;stroke-width:2}
+.node text{font-size:13px;font-weight:600;text-anchor:middle;pointer-events:none}
+.node small{font-size:11px;font-weight:400}
+.edge{stroke:#999;stroke-width:2;fill:none}
+.edge.active{stroke:#ea580c;stroke-width:4}
+.node.active circle{stroke:#ea580c;stroke-width:4}
+#detail{background:#fff;border-radius:16px;padding:16px 18px;margin-top:16px;line-height:1.6;min-height:90px}
+#detail h2{margin:0 0 6px;font-size:18px} #detail p{margin:0;color:#444}
+.legend{color:#666;font-size:13px;margin-top:10px}
+@media(max-width:600px){svg{height:480px} .node text{font-size:11px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>🕸️ Peta Second Brain Im</h1>
+<p class="sub">Klik satu titik untuk melihat garis penghubungnya. Titik tengahnya adalah Second Brain Im — semua hal nyambung lewat situ, bukan berdiri sendiri-sendiri.</p>
+<svg viewBox="0 0 900 560" id="map" role="img" aria-label="Peta connecting dots second brain Im">
+<g id="edges"></g>
+<g id="nodes"></g>
+</svg>
+<div id="detail"><h2>Klik salah satu titik</h2><p>Contoh: klik Inbox untuk melihat dari mana isinya datang dan ke mana dia dirapikan.</p></div>
+<p class="legend">Garis oranye = terhubung dengan titik yang lo klik. Contoh nyata 26 Oktober 2026: Rapat Anjab/ABK dan Cek Domain masuk Daily Notes, Video Motion dan AI Agent di Muse masuk Projects.</p>
+</div>
+<script>
+const nodes=[
+{id:'im',x:450,y:280,r:52,label:'Second Brain',sub:'Im',color:'#111',desc:'Pusatnya. Semua hal nyambung lewat sini. Im yang memutuskan, Muse hanya mengusulkan draf.'},
+{id:'wa',x:130,y:90,r:42,label:'WhatsApp',sub:'sumber',color:'#16a34a',desc:'Sumber tangkapan: ide, tugas, link, pertanyaan. Dari sini semua hal pertama kali masuk.'},
+{id:'muse',x:130,y:280,r:42,label:'Muse',sub:'librarian',color:'#2563eb',desc:'Librarian second brain: menangkap, merapikan, menghubungkan, dan mengingatkan. Bukan gudangnya.'},
+{id:'inbox',x:130,y:470,r:42,label:'Inbox',sub:'keranjang',color:'#ea580c',desc:'Keranjang pertama. Semua hal masuk sini dulu dengan status Belum dirapikan, lalu dirapikan tiap malam/Jumat.'},
+{id:'daily',x:450,y:90,r:42,label:'Daily Notes',sub:'harian',color:'#7c3aed',desc:'Log harian. Contoh 26 Okt 2026: Rapat web Anjab dan ABK di Biro SDMO, dan Cek Domain web digital invitation.'},
+{id:'projects',x:770,y:90,r:42,label:'Projects',sub:'proyek',color:'#db2777',desc:'Proyek aktif. Contoh: Belajar skill video motion (Belajar), dan Ngulik AI agent di Muse (Agent, Berjalan).'},
+{id:'labpul',x:770,y:280,r:42,label:'Labpul',sub:'15.00 WIB',color:'#0891b2',desc:'Agen lapbul Senin-Jumat 15.00 WIB + follow-up 16.00 WIB. Mengubah aktivitas harian jadi narasi SKP setelah konfirmasi.'},
+{id:'sheet',x:770,y:470,r:42,label:'Lapbul Sheet',sub:'SKP final',color:'#16a34a',desc:'Dokumen final SKP, tab Lapbul OKTOBER 2026. Hanya diisi setelah Im konfirmasi, bukan otomatis dari Notion.'},
+{id:'drive',x:450,y:470,r:42,label:'Drive',sub:'bukti',color:'#ca8a04',desc:'Folder bukti bulan berjalan (Tahun / BULAN TAHUN). Kolom bukti di sheet memakai link folder bulan, bukan link per file.'},
+];
+const edges=[
+['wa','muse','WhatsApp → Muse: tangkap ide dan tugas.'],
+['muse','inbox','Muse → Inbox: semua tangkapan masuk keranjang dulu.'],
+['inbox','daily','Inbox → Daily Notes: aktivitas harian seperti rapat dan cek domain.'],
+['inbox','projects','Inbox → Projects: ide yang jadi proyek seperti video motion dan AI agent.'],
+['daily','labpul','Daily Notes → Labpul: bahan harian jadi bahan rekap.'],
+['labpul','sheet','Labpul → Lapbul Sheet: narasi SKP, hanya setelah konfirmasi Im.'],
+['sheet','drive','Lapbul Sheet → Drive: kolom bukti memakai link folder bulan berjalan.'],
+['projects','daily','Projects → Daily Notes: aksi berikutnya dari proyek jadi fokus harian.'],
+['im','muse','Second Brain ↔ Muse: Muse bekerja dari gudang ini, hasilnya kembali ke gudang.'],
+['im','daily','Second Brain ↔ Daily Notes: log harian adalah ingatan harian Im.'],
+['im','projects','Second Brain ↔ Projects: proyek adalah arah kerja Im yang sedang berjalan.'],
+];
+const svgNS='http://www.w3.org/2000/svg';
+const eg=document.getElementById('edges'), ng=document.getElementById('nodes'), detail=document.getElementById('detail');
+const byId=Object.fromEntries(nodes.map(n=>[n.id,n]));
+edges.forEach(([a,b,label],i)=>{
+  const p=document.createElementNS(svgNS,'line');
+  p.setAttribute('x1',byId[a].x); p.setAttribute('y1',byId[a].y);
+  p.setAttribute('x2',byId[b].x); p.setAttribute('y2',byId[b].y);
+  p.setAttribute('class','edge'); p.setAttribute('data-i',i); eg.appendChild(p);
+});
+nodes.forEach(n=>{
+  const g=document.createElementNS(svgNS,'g');
+  g.setAttribute('class','node'); g.setAttribute('data-id',n.id);
+  const c=document.createElementNS(svgNS,'circle');
+  c.setAttribute('cx',n.x); c.setAttribute('cy',n.y); c.setAttribute('r',n.r); c.setAttribute('fill',n.color); c.setAttribute('fill-opacity','0.18');
+  const t=document.createElementNS(svgNS,'text'); t.setAttribute('x',n.x); t.setAttribute('y',n.y-2); t.textContent=n.label;
+  const s=document.createElementNS(svgNS,'text'); s.setAttribute('x',n.x); s.setAttribute('y',n.y+16); s.textContent=n.sub;
+  g.append(c,t,s); ng.appendChild(g);
+  g.addEventListener('click',()=>{
+    document.querySelectorAll('.edge').forEach(e=>e.classList.remove('active'));
+    document.querySelectorAll('.node').forEach(e=>e.classList.remove('active'));
+    g.classList.add('active');
+    const rel=edges.map((e,i)=>({e,i})).filter(x=>x.e[0]===n.id||x.e[1]===n.id);
+    rel.forEach(x=>eg.querySelector(`[data-i="${x.i}"]`).classList.add('active'));
+    const lines=rel.map(x=>`<li>${x.e[2]}</li>`).join('') || '<li>Belum ada garis langsung yang dicatat untuk titik ini.</li>';
+    detail.innerHTML=`<h2>${n.label} — ${n.sub}</h2><p>${n.desc}</p><p><b>Garis yang terhubung:</b></p><ul>${lines}</ul>`;
+  });
+});
+</script>
+</body>
+</html>
