@@ -191,11 +191,22 @@ nodes.forEach(n=>{
     if(Math.abs(dx)>2||Math.abs(dy)>2)moved=true;
     n.x=Math.max(80,Math.min(820,startPos.x+dx));
     n.y=Math.max(40,Math.min(520,startPos.y+dy));
-    renderNode(); renderEdges();
+    renderNode(); try{
+  const saved=JSON.parse(localStorage.getItem('peta-imra-positions-v2')||'null');
+  if(saved){nodes.forEach(n=>{if(saved[n.id]){n.x=saved[n.id][0]; n.y=saved[n.id][1];}});}
+}catch(e){}
+renderEdges();
   });
   function endDrag(e){
     if(!dragging)return; dragging=false;
-    if(moved){e.preventDefault();}
+    if(moved){
+      e.preventDefault();
+      try{
+        const saved={};
+        nodes.forEach(m=>{saved[m.id]=[m.x,m.y];});
+        localStorage.setItem('peta-imra-positions-v2',JSON.stringify(saved));
+      }catch(err){}
+    }
   }
   g.addEventListener('pointerup',endDrag);
   g.addEventListener('pointercancel',()=>{dragging=false;});
@@ -238,6 +249,7 @@ document.getElementById('zoomOut').addEventListener('click',()=>zoomAt(50,50,1.2
 document.getElementById('resetView').addEventListener('click',()=>{
   nodes.forEach(n=>{const o={im:[450,280],wa:[130,90],muse:[130,280],inbox:[130,470],daily:[450,90],projects:[770,90],labpul:[770,280],sheet:[770,470],drive:[450,470]}[n.id]; n.x=o[0]; n.y=o[1]; n.render();});
   renderEdges(); setView({x:initialView.x,y:initialView.y,w:initialView.w,h:initialView.h});
+  try{localStorage.removeItem('peta-imra-positions-v2');}catch(e){}
   document.getElementById('search').value=''; applySearch('');
   clearActive(); selected=null; detail.classList.remove('active');
   detail.innerHTML='<h2>Klik salah satu titik</h2><p>Contoh: klik Inbox untuk melihat dari mana isinya datang dan ke mana dia dirapikan. Titik juga bisa digeser — garisnya ikut.</p>';
