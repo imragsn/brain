@@ -73,8 +73,8 @@ svg{width:100%;height:560px;background:#FFFFFA;display:block}
 </svg>
 </div>
 <div id="detail"><h2>Klik salah satu titik</h2><p>Contoh: klik Inbox untuk melihat dari mana isinya datang dan ke mana dia dirapikan. Titik juga bisa digeser — garisnya ikut.</p></div>
-<p class="legend">Garis tebal = terhubung dengan titik yang lo klik atau yang lo arahkan. Contoh nyata 26 Oktober 2026: Rapat Anjab/ABK dan Cek Domain masuk Daily Notes, Video Motion dan AI Agent di Muse masuk Projects.</p>
-<p class="footer">Volt 1.1.0 — Peta Second Brain Imra · 26 Oktober 2026 · Data dari Notion Second Brain Imra</p>
+<p class="legend">Garis tebal = terhubung dengan titik yang lo klik atau yang lo arahkan. Contoh nyata: Rapat Anjab/ABK dan Cek Domain (26 Oktober 2026) masuk Daily Notes; Video Motion, AI Agent di Muse, dan Poro Engine masuk Projects.</p>
+<p class="footer">Volt 1.1.0 — Peta Second Brain Imra · 30 Oktober 2026 · Data dari Notion Second Brain Imra</p>
 </div>
 <script>
 const nodes=[
@@ -83,7 +83,7 @@ const nodes=[
 {id:'muse',x:130,y:280,w:150,label:'Muse',sub:'librarian',link:null,desc:'Librarian second brain: menangkap, merapikan, menghubungkan, dan mengingatkan. Bukan gudangnya.'},
 {id:'inbox',x:130,y:470,w:150,label:'Inbox',sub:'keranjang',link:'https://app.notion.com/p/a9e2cdd3e6a4458ca22a4b7088560952',linkLabel:'Buka Inbox di Notion',desc:'Keranjang pertama. Semua hal masuk sini dulu dengan status Belum dirapikan, lalu dirapikan tiap malam/Jumat.'},
 {id:'daily',x:450,y:90,w:150,label:'Daily Notes',sub:'harian',link:'https://app.notion.com/p/8131a86ddb3747a5a2e4d3b4976533d3',linkLabel:'Buka Daily Notes di Notion',desc:'Log harian. Contoh 26 Okt 2026: Rapat web Anjab dan ABK di Biro SDMO, dan Cek Domain web digital invitation.'},
-{id:'projects',x:770,y:90,w:150,label:'Projects',sub:'proyek',link:'https://app.notion.com/p/c7e139f02cfa4737ad5e39fe2e687b52',linkLabel:'Buka Projects di Notion',desc:'Proyek aktif. Contoh: Belajar skill video motion (Belajar), dan Ngulik AI agent di Muse (Agent, Berjalan).'},
+{id:'projects',x:770,y:90,w:150,label:'Projects',sub:'proyek',link:'https://app.notion.com/p/c7e139f02cfa4737ad5e39fe2e687b52',linkLabel:'Buka Projects di Notion',desc:'Proyek aktif. Contoh: Belajar skill video motion (Belajar), Ngulik AI agent di Muse (Agent, Berjalan), dan Poro Engine (Agent, Berjalan).'},
 {id:'labpul',x:770,y:280,w:150,label:'Labpul',sub:'15.00 WIB',link:null,desc:'Agen lapbul Senin-Jumat 15.00 WIB + follow-up 16.00 WIB. Mengubah aktivitas harian jadi narasi SKP setelah konfirmasi.'},
 {id:'sheet',x:770,y:470,w:150,label:'Lapbul Sheet',sub:'SKP final',link:'https://docs.google.com/spreadsheets/d/1HhdC6MhUqndvcMPuAWzNeHLJpYSf8gsKVV4P6VD9W0s',linkLabel:'Buka spreadsheet Lapbul',desc:'Dokumen final SKP, tab Lapbul OKTOBER 2026. Hanya diisi setelah Imra konfirmasi, bukan otomatis dari Notion.'},
 {id:'drive',x:450,y:470,w:150,label:'Drive',sub:'bukti',link:'https://drive.google.com/drive/u/1/folders/1VUpDA5sAwdWq3mWNdzQ4CmN5NhDX6Gbd',linkLabel:'Buka folder Drive',desc:'Folder bukti bulan berjalan (Tahun / BULAN TAHUN). Kolom bukti di sheet memakai link folder bulan, bukan link per file.'},
@@ -92,7 +92,7 @@ const edges=[
 ['wa','muse','WhatsApp → Muse: tangkap ide dan tugas.'],
 ['muse','inbox','Muse → Inbox: semua tangkapan masuk keranjang dulu.'],
 ['inbox','daily','Inbox → Daily Notes: aktivitas harian seperti rapat dan cek domain.'],
-['inbox','projects','Inbox → Projects: ide yang jadi proyek seperti video motion dan AI agent.'],
+['inbox','projects','Inbox → Projects: ide yang jadi proyek seperti video motion, AI agent, dan Poro Engine.'],
 ['daily','labpul','Daily Notes → Labpul: bahan harian jadi bahan rekap.'],
 ['labpul','sheet','Labpul → Lapbul Sheet: narasi SKP, hanya setelah konfirmasi Imra.'],
 ['sheet','drive','Lapbul Sheet → Drive: kolom bukti memakai link folder bulan berjalan.'],
